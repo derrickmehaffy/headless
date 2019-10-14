@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="500" height="500" src="https://raw.githubusercontent.com/derrickmehaffy/headless/dm/readmeUpdates/images/headless-logo.png">
+  <img width="200" height="200" src="https://raw.githubusercontent.com/derrickmehaffy/headless/dm/readmeUpdates/images/headless-logo.png">
 </p>
 
 # What is headless? 
