@@ -1,5 +1,3 @@
-[LOGO]
-
 # What is headless? 
 
 Headless is a [Electron](https://goo.gl/search/Electron) based wrapper for your favorite web based CMS of choice(s).
@@ -7,6 +5,8 @@ Headless is a [Electron](https://goo.gl/search/Electron) based wrapper for your 
 ## What are the benefits of headless? 🤖
 
 Headless allows you to configure multiple enviroments with different URL's and let's you switch between them with ease.
+
+![Main env](https://raw.githubusercontent.com/fabio-nettis/headless/master/images/headless-main.PNG)
 
 ## Installation ⏳
 
@@ -38,25 +38,13 @@ You have successfully executed all 4 installation steps? Amazing! Let's get you 
 
 Add an environment to get started.
 
-[SCREENSHOT ADD-FIRST-ENV]
-
-------
-
-If you want add a second environment, go on.
-
-[SCREENSHOT ADD-ENV]
+![Add env](https://raw.githubusercontent.com/fabio-nettis/headless/master/images/headless-add.PNG)
 
 ------
 
 Try switching between your environments.
 
-[SCREENSHOT - SWITCH-ENV]
-
-------
-
-Try deleting one of your environments.
-
-[SCREENSHOT - DEL-ENV]
+![Select env](https://raw.githubusercontent.com/fabio-nettis/headless/master/images/headless-selection.PNG)
 
 ------
 
