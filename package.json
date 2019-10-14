@@ -1,0 +1,28 @@
+{
+  "name": "headless",
+  "version": "1.0.0",
+  "description": "Headless, a place for all of your backends.",
+  "main": "src/index.js",
+  "repository": "https://github.com/fabio-nettis/headless",
+  "author": "Fabio Nettis",
+  "license": "MIT",
+  "private": false,
+  "build": {
+    "appId": "com.headless.console"
+  },
+  "scripts": {
+    "start": "electron ./src/index.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "eslint": "6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "2.18.2",
+    "fs-extra": "^8.1.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^21.2.0",
+    "electron": "^6.0.12"
+  }
+}

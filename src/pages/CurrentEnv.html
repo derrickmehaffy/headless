@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./css/helper.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-teal.min.css" />
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</head>
+
+<body id="body">
+  <!-- Window navigation -->
+  <header id="titlebar">
+    <div id="drag-region">
+      <div id="window-title">
+        <div class="window-menu-logo">headless<span style="color: #26a69a">.</span></div>
+        <div class="window-menu-item" onclick="navigate('environments')">Environments</div>
+        <div class="window-menu-item" onclick="navigate('add')">Add environment</div>
+        <div class="window-menu-item" onclick="navigate('about')">About</div>
+        <div class="window-menu-item" onclick="navigate('help')">Help</div>
+      </div>
+      <div id="window-controls">
+        <div class="button" id="min-button">
+          <span>&#xE921;</span>
+        </div>
+        <div class="button" id="max-button">
+          <span>&#xE922;</span>
+        </div>
+        <div class="button" id="restore-button">
+          <span>&#xE923;</span>
+        </div>
+        <div class="button" id="close-button">
+          <span>&#xE8BB;</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <iframe id="main-frame"></iframe>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const { getCurrentWindow } = require('electron').remote;
+    const SettingsHelper = require('../helpers/SettingsHelper.js');
+
+    // init main frame
+    (async () => {
+      // set active env
+      const active = await SettingsHelper.active();
+      document.getElementById('main-frame').src = active.url;
+    })();
+
+    // navigation 
+    const navigate = (location) => {
+      ipcRenderer.send('onNavigation', location);
+    };
+
+    // init window controls
+    (function handleWindowControls() {
+      // When document has loaded, initialise
+      document.onreadystatechange = () => {
+        if (document.readyState == "complete") {
+          init();
+        }
+      };
+
+      function init() {
+        let window = getCurrentWindow();
+        const minButton = document.getElementById('min-button'),
+          maxButton = document.getElementById('max-button'),
+          restoreButton = document.getElementById('restore-button'),
+          closeButton = document.getElementById('close-button');
+
+        minButton.addEventListener("click", event => {
+          window = getCurrentWindow();
+          window.minimize();
+        });
+
+        maxButton.addEventListener("click", event => {
+          window = getCurrentWindow();
+          window.maximize();
+          toggleMaxRestoreButtons();
+        });
+
+        restoreButton.addEventListener("click", event => {
+          window = getCurrentWindow();
+          window.unmaximize();
+          toggleMaxRestoreButtons();
+        });
+
+        // Toggle maximise/restore buttons when maximisation/unmaximisation
+        // occurs by means other than button clicks e.g. double-clicking
+        // the title bar:
+        toggleMaxRestoreButtons();
+        window.on('maximize', toggleMaxRestoreButtons);
+        window.on('unmaximize', toggleMaxRestoreButtons);
+
+        closeButton.addEventListener("click", event => {
+          window = getCurrentWindow();
+          window.close();
+        });
+
+        function toggleMaxRestoreButtons() {
+          window = getCurrentWindow();
+          if (window.isMaximized()) {
+            maxButton.style.display = "none";
+            restoreButton.style.display = "flex";
+          } else {
+            restoreButton.style.display = "none";
+            maxButton.style.display = "flex";
+          }
+        }
+      }
+    })();
+  </script>
+</body>
+
+</html>

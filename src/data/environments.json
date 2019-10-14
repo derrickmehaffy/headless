@@ -1,0 +1,14 @@
+{
+	"environments": [
+		{
+			"active": false,
+			"name": "Strapi - Productive",
+			"url": "http://192.168.0.6:3080/admin"
+		},
+		{
+			"active": true,
+			"name": "Example",
+			"url": "http://192.168.0.6:3080/example"
+		}
+	]
+}
