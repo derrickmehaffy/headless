@@ -14,6 +14,7 @@ Replace [ ] by [x] to check these checkboxes!
 - [ ] Bug fix
 - [ ] Security update
 - [ ] New feature
+- [ ] Other
 
 #### Manual testing done on the following operating systems:
 
