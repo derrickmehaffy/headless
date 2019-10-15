@@ -101,5 +101,5 @@ public
 .tern-port
 
 # Headless specific files
-src/data/environment.json
+src/data/*
 dist/*
