@@ -102,4 +102,5 @@ public
 
 # Headless specific files
 src/data/*
+src/dist/*
 dist/*
