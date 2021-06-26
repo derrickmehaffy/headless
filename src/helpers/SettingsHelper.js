@@ -4,11 +4,11 @@
  * environments.json file.
  */
 
-const path = require('path');
-const fs = require('fs-extra');
+const path = require("path");
+const fs = require("fs-extra");
 
 const SettingsHelper = {
-  file: path.join(__dirname, '../data/environments.json'),
+  file: path.join(__dirname, "../data/environments.json"),
   /**
    * @param {String} url
    * The url of the environment
@@ -20,13 +20,13 @@ const SettingsHelper = {
    * Returns the created entry
    */
   add: async ({ url = null, name = null, active = false }) => {
-    // validate paramters
+    // validate parameters
     if (!url) {
       throw new Error('Paramter "url" cannot be empty.');
     }
 
     if (!SettingsHelper.isUrl(url)) {
-      throw new Error('The given url is invalid.');
+      throw new Error("The given url is invalid.");
     }
 
     if (!name) {
@@ -36,10 +36,12 @@ const SettingsHelper = {
     let entries = await SettingsHelper.read();
 
     // check for duplicates
-    const hasDuplicates = entries.filter((value) => value.url === url || value.name === name).length > 0;
+    const hasDuplicates =
+      entries.filter((value) => value.url === url || value.name === name)
+        .length > 0;
 
     if (hasDuplicates) {
-      throw new Error('Function add expects entries to be unique.');
+      throw new Error("Function add expects entries to be unique.");
     }
 
     // update active state
@@ -50,7 +52,11 @@ const SettingsHelper = {
     // add the entry to the dataset
     const newEntry = { name, url, active };
     entries.push(newEntry);
-    await fs.writeJSON(SettingsHelper.file, { environments: entries }, { spaces: '\t' });
+    await fs.writeJSON(
+      SettingsHelper.file,
+      { environments: entries },
+      { spaces: "\t" }
+    );
 
     return newEntry;
   },
@@ -83,25 +89,33 @@ const SettingsHelper = {
 
     // validate paramters
     if (!url && !name && active === null) {
-      throw new Error('Please provide one of the paramters "url", "name" or "active".');
+      throw new Error(
+        'Please provide one of the paramters "url", "name" or "active".'
+      );
     }
 
     if (url && !SettingsHelper.isUrl(url)) {
-      throw new Error('The given url is invalid.');
+      throw new Error("The given url is invalid.");
     }
 
     // get current dataset and remove searchName
     const entries = await SettingsHelper.read();
 
     // check for duplicates
-    const hasDuplicates = entries.filter((value) => value.url === url || value.name === name).length > 0;
+    const hasDuplicates =
+      entries.filter((value) => value.url === url || value.name === name)
+        .length > 0;
 
     if (hasDuplicates) {
-      throw new Error('Function update expects entries to be unique.');
+      throw new Error("Function update expects entries to be unique.");
     }
 
     entries.push({ name, url, active });
-    await fs.writeJSON(SettingsHelper.file, { environments: entries }, { spaces: '\t' });
+    await fs.writeJSON(
+      SettingsHelper.file,
+      { environments: entries },
+      { spaces: "\t" }
+    );
 
     return entries;
   },
@@ -121,7 +135,11 @@ const SettingsHelper = {
     const entry = entries.find((value) => value.name === name);
     const updated = entries.filter((value) => value.name !== name);
 
-    await fs.writeJSON(SettingsHelper.file, { environments: updated }, { spaces: '\t' });
+    await fs.writeJSON(
+      SettingsHelper.file,
+      { environments: updated },
+      { spaces: "\t" }
+    );
     return entry;
   },
 
@@ -142,12 +160,15 @@ const SettingsHelper = {
    * Returns true if valid false if not.
    */
   isUrl: (url) => {
-    const pattern = new RegExp('^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // IP (V4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port
-      + '(\\?[;&amp;a-z\\d%_.~+=-]*)?' // query string
-      + '(\\#[-a-z\\d_]*)?$', 'i');
+    const pattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // IP (V4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port
+        "(\\?[;&amp;a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    );
 
     if (pattern.test(url)) {
       return true;
@@ -169,7 +190,11 @@ const SettingsHelper = {
     active.active = false;
     const data = [...entries.filter((value) => !value.active), active];
 
-    await fs.writeJSON(SettingsHelper.file, { environments: data }, { spaces: '\t' });
+    await fs.writeJSON(
+      SettingsHelper.file,
+      { environments: data },
+      { spaces: "\t" }
+    );
     return data;
   },
 
@@ -190,7 +215,11 @@ const SettingsHelper = {
     const setEntries = unsetEntries.filter((value) => value.name !== name);
     setEntries.push(foundItem);
 
-    await fs.writeJSON(SettingsHelper.file, { environments: setEntries }, { spaces: '\t' });
+    await fs.writeJSON(
+      SettingsHelper.file,
+      { environments: setEntries },
+      { spaces: "\t" }
+    );
     return foundItem;
   },
 };

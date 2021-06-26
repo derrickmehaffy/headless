@@ -1,11 +1,9 @@
 {
   "name": "headless",
-  "version": "1.0.0",
-  "description": "Headless, a place for all of your backends.",
+  "version": "1.0.1",
+  "description": "Headless, a Desktop Application for the Strapi Admin Panel.",
   "main": "src/index.js",
-  "repository": "https://github.com/fabio-nettis/headless",
-  "author": "Fabio Nettis",
-  "license": "MIT",
+  "repository": "https://github.com/derrickmehaffy/headless",
   "private": false,
   "build": {
     "appId": "com.headless.console"
@@ -24,5 +22,18 @@
   "devDependencies": {
     "electron-builder": "^21.2.0",
     "electron": "^6.0.12"
-  }
+  },
+  "author": {
+    "name": "Fabio Nettis",
+    "url": "https://github.com/fabio-nettis"
+  },
+  "maintainers": [
+    {
+      "name": "dmehaffy",
+      "email": "dmehaffy@canonn.technology",
+      "discord": "DMehaffy#1337",
+      "url": "https://canonn.science"
+    }
+  ],
+  "license": "MIT"
 }
