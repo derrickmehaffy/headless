@@ -10,7 +10,7 @@ Headless is a [Electron](https://goo.gl/search/Electron) based wrapper for your 
 
 Headless allows you to configure multiple enviroments with different URL's and let's you switch between them with ease.
 
-![Main env](https://raw.githubusercontent.com/fabio-nettis/headless/master/images/headless-main.PNG)
+![Main env](./images/headless-main.PNG)
 
 ## Installation ⏳
 
@@ -42,13 +42,13 @@ You have successfully executed all 4 installation steps? Amazing! Let's get you 
 
 Add an environment to get started.
 
-![Add env](https://raw.githubusercontent.com/fabio-nettis/headless/master/images/headless-add.PNG)
+![Add env](./images/headless-add.PNG)
 
 ------
 
 Try switching between your environments.
 
-![Select env](https://raw.githubusercontent.com/fabio-nettis/headless/master/images/headless-selection.PNG)
+![Select env](./images/headless-selection.PNG)
 
 Thats it. Your all set! Enjoy headless alpha-1.0.0 with more features to come soon! 😁
 
