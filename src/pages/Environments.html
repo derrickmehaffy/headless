@@ -1,160 +1,179 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./css/helper.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.blue_grey-teal.min.css"
+    />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </head>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="./css/helper.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-teal.min.css" />
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-</head>
-
-<body id="body">
-  <!-- Window navigation -->
-  <header id="titlebar">
-    <div id="drag-region">
-      <div id="window-title">
-        <div class="window-menu-logo">headless<span style="color: #26a69a">.</span></div>
-        <div class="window-menu-item" style="color: #26a69a">Environments</div>
-        <div class="window-menu-item" onclick="navigate('add')">Add environment</div>
-        <div class="window-menu-item" onclick="navigate('about')">About</div>
-        <div class="window-menu-item" onclick="navigate('help')">Help</div>
+  <body id="body">
+    <!-- Window navigation -->
+    <header id="titlebar">
+      <div id="drag-region">
+        <div id="window-title">
+          <div class="window-menu-logo">
+            headless<span style="color: #26a69a">.</span>
+          </div>
+          <div class="window-menu-item" style="color: #26a69a">
+            Environments
+          </div>
+          <div class="window-menu-item" onclick="navigate('add')">
+            Add environment
+          </div>
+          <div class="window-menu-item" onclick="navigate('about')">About</div>
+          <div class="window-menu-item" onclick="navigate('help')">Help</div>
+        </div>
+        <div id="window-controls">
+          <div class="button" id="min-button">
+            <span>&#xE921;</span>
+          </div>
+          <div class="button" id="max-button">
+            <span>&#xE922;</span>
+          </div>
+          <div class="button" id="restore-button">
+            <span>&#xE923;</span>
+          </div>
+          <div class="button" id="close-button">
+            <span>&#xE8BB;</span>
+          </div>
+        </div>
       </div>
-      <div id="window-controls">
-        <div class="button" id="min-button">
-          <span>&#xE921;</span>
+    </header>
+
+    <div class="row full-height">
+      <div class="column full-height center">
+        <div style="align-self: center">
+          <h2 style="width: 100%; font-weight: 700; font-size: 50px">
+            Your environments
+          </h2>
+          <h5 style="width: 100%; padding-top: 0; margin-top: 0">
+            manage them all from one place.
+          </h5>
+          <div
+            style="
+              border-radius: 50px;
+              height: 20px;
+              width: 120px;
+              background-color: #eceff1;
+              align-self: flex-start;
+              margin-top: 24px;
+            "
+          ></div>
         </div>
-        <div class="button" id="max-button">
-          <span>&#xE922;</span>
-        </div>
-        <div class="button" id="restore-button">
-          <span>&#xE923;</span>
-        </div>
-        <div class="button" id="close-button">
-          <span>&#xE8BB;</span>
+      </div>
+
+      <div
+        class="column full-height center"
+        style="border-right: 1px solid rgba(0, 0, 0, 0.1)"
+      >
+        <div style="padding-right: 32px; padding-top: 24px">
+          <ul id="list" class="demo-list-two mdl-list"></ul>
         </div>
       </div>
     </div>
-  </header>
 
-  <div class="row full-height">
-    <div class="column full-height center">
-      <div style="align-self: center;">
-        <h2 style="width: 100%; font-weight: 700; font-size: 50px;">Your environments</h2>
-        <h5 style="width: 100%; padding-top: 0; margin-top: 0">
-          manage them all from one place.
-        </h5>
-        <div
-          style="border-radius: 50px; height: 20px; width: 120px; background-color: #eceff1; align-self: flex-start; margin-top: 24px;">
-        </div>
-      </div>
-    </div>
+    <script>
+      const { ipcRenderer } = require("electron");
+      const { getCurrentWindow } = require("electron").remote;
+      const SettingsHelper = require("../helpers/SettingsHelper.js");
 
-    <div class="column full-height center" style="border-right: 1px solid rgba(0, 0, 0, 0.1);">
-
-
-      <div style="padding-right: 32px; padding-top: 24px;">
-
-        <ul id="list" class="demo-list-two mdl-list"></ul>
-
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const { ipcRenderer } = require('electron');
-    const { getCurrentWindow } = require('electron').remote;
-    const SettingsHelper = require('../helpers/SettingsHelper.js');
-
-    (async () => {
-      const item = (value, last) => {
-        return `
-          <li style="cursor: pointer" onclick="setEnvironment('${value.name}')" class="mdl-list__item mdl-list__item--two-line">
+      (async () => {
+        const item = (value, last) => {
+          return `
+          <li style="cursor: pointer" onclick="setEnvironment('${
+            value.name
+          }')" class="mdl-list__item mdl-list__item--two-line">
             <span class="mdl-list__item-primary-content">
               <span>${value.name}</span>
               <span class="mdl-list__item-sub-title">${value.url}</span>
             </span>
           </li>
-          ${last ? '' : '<hr>'}
+          ${last ? "" : "<hr>"}
         `;
-      }
-      const entries = await SettingsHelper.read();
-      entries.forEach((value, index) => {
-        const element = document.getElementById('list');
-        element.innerHTML = element.innerHTML + item(
-          value,
-          index === entries.length - 1 || entries.length === 0
-        );
-      });
-    })();
+        };
+        const entries = await SettingsHelper.read();
+        entries.forEach((value, index) => {
+          const element = document.getElementById("list");
+          element.innerHTML =
+            element.innerHTML +
+            item(value, index === entries.length - 1 || entries.length === 0);
+        });
+      })();
 
-    const setEnvironment = async (name) => {
-      ipcRenderer.send('onActiveChanged', name);
-    };
-
-    // navigation 
-    const navigate = (location) => {
-      ipcRenderer.send('onNavigation', location);
-    };
-
-    // init window controls
-    (function handleWindowControls() {
-      // When document has loaded, initialise
-      document.onreadystatechange = () => {
-        if (document.readyState == "complete") {
-          init();
-        }
+      const setEnvironment = async (name) => {
+        ipcRenderer.send("onActiveChanged", name);
       };
 
-      function init() {
-        let window = getCurrentWindow();
-        const minButton = document.getElementById('min-button'),
-          maxButton = document.getElementById('max-button'),
-          restoreButton = document.getElementById('restore-button'),
-          closeButton = document.getElementById('close-button');
+      // navigation
+      const navigate = (location) => {
+        ipcRenderer.send("onNavigation", location);
+      };
 
-        minButton.addEventListener("click", event => {
-          window = getCurrentWindow();
-          window.minimize();
-        });
+      // init window controls
+      (function handleWindowControls() {
+        // When document has loaded, initialize
+        document.onreadystatechange = () => {
+          if (document.readyState == "complete") {
+            init();
+          }
+        };
 
-        maxButton.addEventListener("click", event => {
-          window = getCurrentWindow();
-          window.maximize();
+        function init() {
+          let window = getCurrentWindow();
+          const minButton = document.getElementById("min-button"),
+            maxButton = document.getElementById("max-button"),
+            restoreButton = document.getElementById("restore-button"),
+            closeButton = document.getElementById("close-button");
+
+          minButton.addEventListener("click", (event) => {
+            window = getCurrentWindow();
+            window.minimize();
+          });
+
+          maxButton.addEventListener("click", (event) => {
+            window = getCurrentWindow();
+            window.maximize();
+            toggleMaxRestoreButtons();
+          });
+
+          restoreButton.addEventListener("click", (event) => {
+            window = getCurrentWindow();
+            window.unmaximize();
+            toggleMaxRestoreButtons();
+          });
+
+          // Toggle maximize/restore buttons when maximization/un-maximization
+          // occurs by means other than button clicks e.g. double-clicking
+          // the title bar:
           toggleMaxRestoreButtons();
-        });
+          window.on("maximize", toggleMaxRestoreButtons);
+          window.on("unmaximize", toggleMaxRestoreButtons);
 
-        restoreButton.addEventListener("click", event => {
-          window = getCurrentWindow();
-          window.unmaximize();
-          toggleMaxRestoreButtons();
-        });
+          closeButton.addEventListener("click", (event) => {
+            window = getCurrentWindow();
+            window.close();
+          });
 
-        // Toggle maximise/restore buttons when maximisation/unmaximisation
-        // occurs by means other than button clicks e.g. double-clicking
-        // the title bar:
-        toggleMaxRestoreButtons();
-        window.on('maximize', toggleMaxRestoreButtons);
-        window.on('unmaximize', toggleMaxRestoreButtons);
-
-        closeButton.addEventListener("click", event => {
-          window = getCurrentWindow();
-          window.close();
-        });
-
-        function toggleMaxRestoreButtons() {
-          window = getCurrentWindow();
-          if (window.isMaximized()) {
-            maxButton.style.display = "none";
-            restoreButton.style.display = "flex";
-          } else {
-            restoreButton.style.display = "none";
-            maxButton.style.display = "flex";
+          function toggleMaxRestoreButtons() {
+            window = getCurrentWindow();
+            if (window.isMaximized()) {
+              maxButton.style.display = "none";
+              restoreButton.style.display = "flex";
+            } else {
+              restoreButton.style.display = "none";
+              maxButton.style.display = "flex";
+            }
           }
         }
-      }
-    })();
-  </script>
-</body>
-
+      })();
+    </script>
+  </body>
 </html>

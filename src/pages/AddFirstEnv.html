@@ -1,178 +1,218 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./css/helper.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.blue_grey-teal.min.css"
+    />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </head>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="./css/helper.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-teal.min.css" />
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-</head>
-
-<body id="body">
+  <body id="body">
     <header id="titlebar">
-        <div id="drag-region">
-          <div id="window-title">
-            <div class="window-menu-logo">headless<span style="color: #26a69a">.</span></div>
-          </div>
-          <div id="window-controls">
-            <div class="button" id="min-button">
-              <span>&#xE921;</span>
-            </div>
-            <div class="button" id="max-button">
-              <span>&#xE922;</span>
-            </div>
-            <div class="button" id="restore-button">
-              <span>&#xE923;</span>
-            </div>
-            <div class="button" id="close-button">
-              <span>&#xE8BB;</span>
-            </div>
+      <div id="drag-region">
+        <div id="window-title">
+          <div class="window-menu-logo">
+            headless<span style="color: #26a69a">.</span>
           </div>
         </div>
-      </header>
+        <div id="window-controls">
+          <div class="button" id="min-button">
+            <span>&#xE921;</span>
+          </div>
+          <div class="button" id="max-button">
+            <span>&#xE922;</span>
+          </div>
+          <div class="button" id="restore-button">
+            <span>&#xE923;</span>
+          </div>
+          <div class="button" id="close-button">
+            <span>&#xE8BB;</span>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
-    <div class="mdl-snackbar__text"></div>
-    <button class="mdl-snackbar__action" type="button"></button>
-  </div>
+    <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
+    </div>
 
-  <div class="row full-height">
-    <div class="column full-height center">
-      <div style="align-self: center;">
-        <h2 style="width: 100%; font-weight: 700; font-size: 50px;">Say Hi! To Headless.</h2>
-        <h5 style="width: 100%; padding-top: 0; margin-top: 0">
-          A place for all of your backends.
-        </h5>
-        <div
-          style="border-radius: 50px; height: 20px; width: 120px; background-color: #eceff1; align-self: flex-start; margin-top: 24px;">
+    <div class="row full-height">
+      <div class="column full-height center">
+        <div style="align-self: center">
+          <h2 style="width: 100%; font-weight: 700; font-size: 50px">
+            Say Hi! To Headless.
+          </h2>
+          <h5 style="width: 100%; padding-top: 0; margin-top: 0">
+            A place for all of your backends.
+          </h5>
+          <div
+            style="
+              border-radius: 50px;
+              height: 20px;
+              width: 120px;
+              background-color: #eceff1;
+              align-self: flex-start;
+              margin-top: 24px;
+            "
+          ></div>
+        </div>
+      </div>
+
+      <div
+        class="column full-height center"
+        style="
+          background-color: #e0f2f1;
+          border-right: 1px solid rgba(0, 0, 0, 0.1);
+        "
+      >
+        <div style="padding-right: 32px; padding-top: 24px">
+          <div
+            class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+          >
+            <input
+              class="mdl-textfield__input"
+              type="text"
+              id="connection-name"
+            />
+            <label class="mdl-textfield__label" for="connection-name"
+              >Enter a name for your enviroment</label
+            >
+          </div>
+
+          <div style="height: 16px"></div>
+
+          <div
+            class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+          >
+            <input
+              class="mdl-textfield__input"
+              type="text"
+              id="connection-url"
+            />
+            <label class="mdl-textfield__label" for="connection-url"
+              >Enter an url</label
+            >
+          </div>
+
+          <div style="height: 16px"></div>
+
+          <button
+            onclick="handleConnectClick();"
+            class="
+              connection-button
+              mdl-button mdl-js-button
+              mdl-button--raised mdl-button--colored
+            "
+          >
+            Connect
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="column full-height center"
-      style="background-color: #e0f2f1; border-right: 1px solid rgba(0, 0, 0, 0.1);">
+    <script>
+      const remote = require("electron").remote;
 
+      (function handleWindowControls() {
+        // When document has loaded, initialize
+        document.onreadystatechange = () => {
+          if (document.readyState == "complete") {
+            init();
+          }
+        };
 
-      <div style="padding-right: 32px; padding-top: 24px;">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="connection-name">
-          <label class="mdl-textfield__label" for="connection-name">Enter a name for your enviroment</label>
-        </div>
+        function init() {
+          let window = remote.getCurrentWindow();
+          const minButton = document.getElementById("min-button"),
+            maxButton = document.getElementById("max-button"),
+            restoreButton = document.getElementById("restore-button"),
+            closeButton = document.getElementById("close-button");
 
-        <div style="height: 16px"></div>
+          minButton.addEventListener("click", (event) => {
+            window = remote.getCurrentWindow();
+            window.minimize();
+          });
 
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="connection-url">
-          <label class="mdl-textfield__label" for="connection-url">Enter an url</label>
-        </div>
+          maxButton.addEventListener("click", (event) => {
+            window = remote.getCurrentWindow();
+            window.maximize();
+            toggleMaxRestoreButtons();
+          });
 
-        <div style="height: 16px"></div>
+          restoreButton.addEventListener("click", (event) => {
+            window = remote.getCurrentWindow();
+            window.unmaximize();
+            toggleMaxRestoreButtons();
+          });
 
-        <button onclick="handleConnectClick();"
-          class="connection-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-          Connect
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const remote = require('electron').remote;
-
-    (function handleWindowControls() {
-      // When document has loaded, initialise
-      document.onreadystatechange = () => {
-        if (document.readyState == "complete") {
-          init();
-        }
-      };
-
-      function init() {
-        let window = remote.getCurrentWindow();
-        const minButton = document.getElementById('min-button'),
-          maxButton = document.getElementById('max-button'),
-          restoreButton = document.getElementById('restore-button'),
-          closeButton = document.getElementById('close-button');
-
-        minButton.addEventListener("click", event => {
-          window = remote.getCurrentWindow();
-          window.minimize();
-        });
-
-        maxButton.addEventListener("click", event => {
-          window = remote.getCurrentWindow();
-          window.maximize();
+          // Toggle maximize/restore buttons when maximization/un-maximization
+          // occurs by means other than button clicks e.g. double-clicking
+          // the title bar:
           toggleMaxRestoreButtons();
-        });
+          window.on("maximize", toggleMaxRestoreButtons);
+          window.on("unmaximize", toggleMaxRestoreButtons);
 
-        restoreButton.addEventListener("click", event => {
-          window = remote.getCurrentWindow();
-          window.unmaximize();
-          toggleMaxRestoreButtons();
-        });
+          closeButton.addEventListener("click", (event) => {
+            window = remote.getCurrentWindow();
+            window.close();
+          });
 
-        // Toggle maximise/restore buttons when maximisation/unmaximisation
-        // occurs by means other than button clicks e.g. double-clicking
-        // the title bar:
-        toggleMaxRestoreButtons();
-        window.on('maximize', toggleMaxRestoreButtons);
-        window.on('unmaximize', toggleMaxRestoreButtons);
-
-        closeButton.addEventListener("click", event => {
-          window = remote.getCurrentWindow();
-          window.close();
-        });
-
-        function toggleMaxRestoreButtons() {
-          window = remote.getCurrentWindow();
-          if (window.isMaximized()) {
-            maxButton.style.display = "none";
-            restoreButton.style.display = "flex";
-          } else {
-            restoreButton.style.display = "none";
-            maxButton.style.display = "flex";
+          function toggleMaxRestoreButtons() {
+            window = remote.getCurrentWindow();
+            if (window.isMaximized()) {
+              maxButton.style.display = "none";
+              restoreButton.style.display = "flex";
+            } else {
+              restoreButton.style.display = "none";
+              maxButton.style.display = "flex";
+            }
           }
         }
-      }
-    })();
+      })();
 
-    const handleConnectClick = () => {
-      // show dialog if fields are empty
-      if (document.getElementById('connection-name').value.length === 0) {
-        const snackbarContainer = document.querySelector('#snackbar');
-        var data = {
-          message: 'Please enter a name for your environment.',
-          timeout: 2000,
-        };
-        snackbarContainer.MaterialSnackbar.showSnackbar(data);
-        return
-      }
+      const handleConnectClick = () => {
+        // show dialog if fields are empty
+        if (document.getElementById("connection-name").value.length === 0) {
+          const snackbarContainer = document.querySelector("#snackbar");
+          var data = {
+            message: "Please enter a name for your environment.",
+            timeout: 2000,
+          };
+          snackbarContainer.MaterialSnackbar.showSnackbar(data);
+          return;
+        }
 
-      if (document.getElementById('connection-url').value.length === 0) {
-        const snackbarContainer = document.querySelector('#snackbar');
-        var data = {
-          message: 'Please enter an url for your environment.',
-          timeout: 2000,
-        };
-        snackbarContainer.MaterialSnackbar.showSnackbar(data);
-        return
-      }
+        if (document.getElementById("connection-url").value.length === 0) {
+          const snackbarContainer = document.querySelector("#snackbar");
+          var data = {
+            message: "Please enter an url for your environment.",
+            timeout: 2000,
+          };
+          snackbarContainer.MaterialSnackbar.showSnackbar(data);
+          return;
+        }
 
-      const ipc = require('electron').ipcRenderer;
+        const ipc = require("electron").ipcRenderer;
 
-      // send reload request to the main process
-      try {
-        ipc.send('onItemAdded', {
-          name: document.getElementById('connection-name').value,
-          url: document.getElementById('connection-url').value,
-          active: true,
-        });
-      } catch (err) {
-        console.log(err)
-      }
-    }
-  </script>
-</body>
-
+        // send reload request to the main process
+        try {
+          ipc.send("onItemAdded", {
+            name: document.getElementById("connection-name").value,
+            url: document.getElementById("connection-url").value,
+            active: true,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+    </script>
+  </body>
 </html>
